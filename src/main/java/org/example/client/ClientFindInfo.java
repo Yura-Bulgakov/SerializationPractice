@@ -1,4 +1,4 @@
-package org.example;
+package org.example.client;
 
 public class ClientFindInfo {
     private Dul dul;
@@ -11,7 +11,15 @@ public class ClientFindInfo {
         return dul;
     }
 
+    public void setDul(Dul dul) {
+        this.dul = dul;
+    }
+
     public int getPartyId() {
         return partyId;
+    }
+
+    public void setPartyId(int partyId) {
+        this.partyId = partyId;
     }
 }
