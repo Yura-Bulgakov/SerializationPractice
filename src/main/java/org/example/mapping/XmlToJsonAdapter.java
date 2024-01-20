@@ -24,16 +24,26 @@ public class XmlToJsonAdapter<T, V> {
     }
 
     public void adapt(String xmlFile, String jsonFile) throws IOException {
+        T data = readDataFromXml(xmlFile);
+        V writeData = typeMapper.map(data);
+        writeDataToJson(jsonFile, writeData);
+        System.out.printf("Перезапись данных из %s в %s прошла успешно %n", xmlFile, jsonFile);
+    }
+
+    private T readDataFromXml(String xmlFile) throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream(xmlFile)) {
             if (inputStream != null) {
-                T data = xmlMapper.readValue(inputStream, tClass);
-                V writeData = typeMapper.map(data);
-                objectMapper.writeValue(new File(jsonFile), writeData);
-                System.out.printf("Перезапись данных из %s в %s прошла успешно %n", xmlFile, jsonFile);
+                return xmlMapper.readValue(inputStream, tClass);
             } else {
                 System.out.println("Не удалось загрузить файл: " + xmlFile);
+                throw new FileNotFoundException();
             }
         }
     }
+
+    private void writeDataToJson(String jsonFile, V dataToWrite) throws IOException {
+        objectMapper.writeValue(new File(jsonFile), dataToWrite);
+    }
+
 
 }

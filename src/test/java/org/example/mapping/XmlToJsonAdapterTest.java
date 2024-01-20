@@ -11,10 +11,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 
 @ExtendWith(MockitoExtension.class)
 class XmlToJsonAdapterTest {
@@ -47,9 +44,7 @@ class XmlToJsonAdapterTest {
     void adaptNotExistingFile() throws IOException {
         String xmlFilePath = "/nnnn.xml";
         File tempFile = File.createTempFile("tempFile", ".json", new File("src/test/resources"));
-        String expectedMessage = "Не удалось загрузить файл: /nnnn.xml";
-        adapter.adapt(xmlFilePath, tempFile.getPath());
-        Assertions.assertEquals(expectedMessage, getCapturedOut());
+        Assertions.assertThrows(FileNotFoundException.class, () -> adapter.adapt(xmlFilePath, tempFile.getPath()));
         tempFile.deleteOnExit();
     }
 
